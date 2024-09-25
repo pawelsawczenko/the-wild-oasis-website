@@ -1,5 +1,5 @@
 export type Cabin = {
-  id: string;
+  id: number;
   name: string;
   maxCapacity: number;
   regularPrice: number;
@@ -7,9 +7,19 @@ export type Cabin = {
   image: string;
 };
 
+export type Guest = {
+  id: number;
+  created_at: string;
+  fullName: string;
+  email: string;
+  nationalID: string;
+  nationality: string;
+  countryFlag: string;
+};
+
 export type Booking = {
-  id: string;
-  guestId: string;
+  id: number;
+  guestId: number;
   startDate: string;
   endDate: string;
   numNights: number;
