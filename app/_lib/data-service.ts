@@ -1,7 +1,7 @@
 import { eachDayOfInterval } from "date-fns";
 import { supabase } from "./supabase";
 import { Booking, Guest, Cabin } from "./definitions";
-import { Tables } from "./database.types";
+import { notFound } from "next/navigation";
 
 export type Country = {
   name: string;
@@ -24,6 +24,7 @@ export async function getCabin(id: number) {
 
   if (error) {
     console.error(error);
+    notFound();
   }
 
   return data;
