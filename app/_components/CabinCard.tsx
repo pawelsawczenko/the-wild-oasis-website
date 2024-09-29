@@ -37,8 +37,8 @@ function CabinCard({ cabin }: CabinProps) {
           </div>
 
           <p className="flex gap-3 justify-end items-baseline">
-            {discount &&
-              regularPrice &&
+            {regularPrice != null &&
+              discount != null &&
               (discount > 0 ? (
                 <>
                   <span className="text-3xl font-[350]">

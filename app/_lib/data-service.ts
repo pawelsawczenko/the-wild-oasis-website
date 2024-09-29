@@ -1,6 +1,6 @@
 import { eachDayOfInterval } from "date-fns";
 import { supabase } from "./supabase";
-import { Booking, Guest, Cabin } from "./definitions";
+import { Booking, Guest } from "./definitions";
 import { notFound } from "next/navigation";
 
 export type Country = {
@@ -192,7 +192,7 @@ export async function createBooking(newBooking: Booking) {
 // UPDATE
 
 // The updatedFields is an object which should ONLY contain the updated data
-export async function updateGuest(id: number, updatedFields) {
+export async function updateGuest(id: number, updatedFields: Guest) {
   const { data, error } = await supabase
     .from("guests")
     .update(updatedFields)
@@ -207,7 +207,7 @@ export async function updateGuest(id: number, updatedFields) {
   return data;
 }
 
-export async function updateBooking(id: number, updatedFields) {
+export async function updateBooking(id: number, updatedFields: Booking) {
   const { data, error } = await supabase
     .from("bookings")
     .update(updatedFields)
