@@ -244,7 +244,8 @@ export async function deleteBooking(id: number) {
 
   if (error) {
     console.error(error);
-    throw new Error("Booking could not be deleted");
+    // handling error in actions.ts
+    // throw new Error("Booking could not be deleted");
   }
-  return data;
+  return { data, error };
 }
