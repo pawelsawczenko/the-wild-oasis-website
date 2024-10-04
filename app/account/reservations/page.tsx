@@ -1,13 +1,15 @@
 import ReservationCard from "@/app/_components/ReservationCard";
-import { Booking } from "../../_lib/definitions";
+import { getBookings } from "../../_lib/data-service";
+import { auth } from "../../_lib/auth";
 
 export const metadata = {
   title: "Reservations",
 };
 
-export default function Page() {
-  // CHANGE
-  const bookings: Booking[] = [];
+export default async function Page() {
+  const session = await auth();
+  // at this point the user is already signed in and can't acccess the page without it
+  const bookings = await getBookings(session?.user.guestId as number);
 
   return (
     <div>
@@ -24,9 +26,10 @@ export default function Page() {
         </p>
       ) : (
         <ul className="space-y-6">
-          {bookings.map((booking) => (
-            <ReservationCard booking={booking} key={booking.id} />
-          ))}
+          {bookings.map((booking) => {
+            if (booking != null)
+              return <ReservationCard booking={booking} key={booking.id} />;
+          })}
         </ul>
       )}
     </div>

@@ -8,7 +8,7 @@ export const metadata = {
 export default function SignInButton() {
   return (
     <form action={signInAction}>
-      <button className="flex items-center gap-6 text-lg border border-primary-300 px-10 py-4 font-medium hover:border-accent-400 hover:text-accent-400 transition-colors">
+      <button className="flex items-center gap-6 text-lg border border-primary-300 px-10 py-4 font-medium hover:border-accent-400 hover:text-primary-900 transition-colors">
         <Image
           src="https://authjs.dev/img/providers/google.svg"
           alt="Google logo"

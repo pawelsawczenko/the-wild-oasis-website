@@ -1,10 +1,26 @@
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import { format, formatDistance, isPast, isToday, parseISO } from "date-fns";
 import DeleteReservation from "./DeleteReservation";
-import { Booking } from "../_lib/definitions";
+
+import Image from "next/image";
+import Link from "next/link";
 
 interface BookingProps {
-  booking: Booking;
+  booking: {
+    id: number;
+    created_at: string;
+    startDate: string | null;
+    endDate: string | null;
+    numNights: number | null;
+    numGuests: number | null;
+    totalPrice: number | null;
+    guestId: number | null;
+    cabinId: number | null;
+    cabins: {
+      name: string | null;
+      image: string | null;
+    } | null;
+  };
 }
 
 export const formatDistanceFromNow = (dateStr: string) =>
@@ -21,17 +37,33 @@ export default function ReservationCard({ booking }: BookingProps) {
     numNights,
     totalPrice,
     numGuests,
-    status,
     created_at,
-    cabins: { name, image },
+    cabins,
   } = booking;
+
+  // cause supabase types
+  if (guestId === null) return null;
+  if (startDate === null) return null;
+  if (endDate === null) return null;
+  if (numNights === null) return null;
+  if (totalPrice === null) return null;
+  if (numGuests === null) return null;
+  if (created_at === null) return null;
+  if (cabins === null) return null;
+
+  const { name, image } = cabins;
+
+  // cause supabase types
+  if (name === null) return null;
+  if (image === null) return null;
 
   return (
     <div className="flex border border-primary-800">
       <div className="relative h-32 aspect-square">
-        <img
+        <Image
           src={image}
           alt={`Cabin ${name}`}
+          fill
           className="object-cover border-r border-primary-800"
         />
       </div>
@@ -73,14 +105,18 @@ export default function ReservationCard({ booking }: BookingProps) {
       </div>
 
       <div className="flex flex-col border-l border-primary-800 w-[100px]">
-        <a
-          href={`/account/reservations/edit/${id}`}
-          className="group flex items-center gap-2 uppercase text-xs font-bold text-primary-300 border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900"
-        >
-          <PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors" />
-          <span className="mt-1">Edit</span>
-        </a>
-        <DeleteReservation bookingId={id} />
+        {!isPast(startDate) ? (
+          <>
+            <Link
+              href={`/account/reservations/edit/${id}`}
+              className="group flex items-center gap-2 uppercase text-xs font-bold text-primary-300 border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900"
+            >
+              <PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors" />
+              <span className="mt-1">Edit</span>
+            </Link>
+            <DeleteReservation bookingId={id} />{" "}
+          </>
+        ) : null}
       </div>
     </div>
   );

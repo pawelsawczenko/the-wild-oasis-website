@@ -24,6 +24,7 @@ export default function UpdateProfileForm({
           disabled
           className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
           name="fullName"
+          // at this point the user is already signed in and can't acccess the page without it
           defaultValue={fullName as string}
         />
       </div>
@@ -34,6 +35,7 @@ export default function UpdateProfileForm({
           disabled
           className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
           name="email"
+          // at this point the user is already signed in and can't acccess the page without it
           defaultValue={email as string}
         />
       </div>
