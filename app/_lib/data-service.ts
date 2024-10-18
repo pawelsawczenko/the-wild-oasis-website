@@ -1,12 +1,17 @@
 import { eachDayOfInterval } from "date-fns";
 import { supabase } from "./supabase";
-import { Booking, Guest } from "./definitions";
+import { Booking } from "./definitions";
 import { notFound } from "next/navigation";
 
 export type Country = {
   name: string;
   flag: string;
   independent: boolean;
+};
+
+type UpdateBookingData = {
+  numGuests: number;
+  observations: string;
 };
 
 /////////////
@@ -221,7 +226,10 @@ export async function updateGuest(
   return { data, error };
 }
 
-export async function updateBooking(id: number, updatedFields: Booking) {
+export async function updateBooking(
+  id: number,
+  updatedFields: UpdateBookingData
+) {
   const { data, error } = await supabase
     .from("bookings")
     .update(updatedFields)
@@ -231,9 +239,10 @@ export async function updateBooking(id: number, updatedFields: Booking) {
 
   if (error) {
     console.error(error);
-    throw new Error("Booking could not be updated");
+    // handling error in actions.ts
+    // throw new Error("Booking could not be updated");
   }
-  return data;
+  return { data, error };
 }
 
 /////////////

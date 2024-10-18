@@ -2,7 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "./auth";
-import { deleteBooking, getBookings, updateGuest } from "./data-service";
+import {
+  deleteBooking,
+  getBookings,
+  updateBooking,
+  updateGuest,
+} from "./data-service";
+import { redirect } from "next/navigation";
 
 export async function upadteProfile(formData: FormData) {
   const session = await auth();
@@ -30,6 +36,50 @@ export async function upadteProfile(formData: FormData) {
   }
 
   revalidatePath("/account/profile");
+}
+
+export async function upadteReservation(formData: FormData) {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  const guestBookings = await getBookings(session.user.guestId);
+  const guestBookingsId = guestBookings.map((booking) => booking.id);
+
+  const rawBookingId = formData.get("bookingId");
+
+  if (rawBookingId === null)
+    throw new Error("No booking id was found. Please try again");
+
+  const bookingId = Number(rawBookingId);
+
+  if (!guestBookingsId.includes(bookingId)) {
+    throw new Error("You are not allowed to update this booking");
+  }
+
+  const rawNumGuests = formData.get("numGuests");
+  const observations = formData.get("observations");
+
+  if (rawNumGuests === null)
+    throw new Error(
+      "Something went wrong with num of guests. Please try again"
+    );
+  if (observations === null)
+    throw new Error("Something went wrong with observations. Please try again");
+
+  const updateData = {
+    numGuests: Number(rawNumGuests),
+    observations: String(observations).slice(0, 1000),
+  };
+
+  const { error } = await updateBooking(bookingId, updateData);
+
+  if (error) {
+    throw new Error("Booking could not be updated");
+  }
+  revalidatePath(`/account/reservations/edit/{${bookingId}}`);
+  revalidatePath("/account/reservations");
+
+  redirect("/account/reservations");
 }
 
 export async function deleteReservation(bookingId: number) {
