@@ -1,12 +1,27 @@
 import { eachDayOfInterval } from "date-fns";
 import { supabase } from "./supabase";
-import { Booking } from "./definitions";
 import { notFound } from "next/navigation";
 
 export type Country = {
   name: string;
   flag: string;
   independent: boolean;
+};
+
+export type CreateBookingData = {
+  startDate: string;
+  endDate: string;
+  guestId: number;
+  numGuests: number;
+  observations: string;
+  extrasPrice: number;
+  totalPrice: number;
+  isPaid: boolean;
+  hasBreakfast: boolean;
+  status: string;
+  numNights: number;
+  cabinPrice: number;
+  cabinId: number;
 };
 
 type UpdateBookingData = {
@@ -79,7 +94,7 @@ export async function getGuest(email: string) {
 }
 
 export async function getBooking(id: number) {
-  const { data, error, count } = await supabase
+  const { data, error } = await supabase
     .from("bookings")
     .select("*")
     .eq("id", id)
@@ -94,7 +109,7 @@ export async function getBooking(id: number) {
 }
 
 export async function getBookings(guestId: number) {
-  const { data, error, count } = await supabase
+  const { data, error } = await supabase
     .from("bookings")
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
     .select(
@@ -183,20 +198,16 @@ export async function createGuest(newGuest: {
   return data;
 }
 
-export async function createBooking(newBooking: Booking) {
-  const { data, error } = await supabase
-    .from("bookings")
-    .insert([newBooking])
-    // So that the newly created object gets returned!
-    .select()
-    .single();
+export async function createBooking(newBooking: CreateBookingData) {
+  const { error } = await supabase.from("bookings").insert([newBooking]);
 
   if (error) {
     console.error(error);
-    throw new Error("Booking could not be created");
+    // handling error in actions.ts
+    // throw new Error("Booking could not be created");
   }
 
-  return data;
+  return { error };
 }
 
 /////////////

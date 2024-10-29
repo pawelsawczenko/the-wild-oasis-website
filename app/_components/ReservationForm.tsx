@@ -3,6 +3,17 @@
 import { User } from "next-auth";
 import { Cabin } from "../_lib/definitions";
 import { useReservation } from "./ReservationContext";
+import { differenceInDays } from "date-fns";
+import { createReservation } from "../_lib/actions";
+import SubmitButton from "./SubmitButton";
+
+export type BookingData = {
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  numNights: number;
+  cabinPrice: number;
+  cabinId: number;
+};
 
 interface ReservationFormProps {
   cabin: Cabin;
@@ -10,12 +21,29 @@ interface ReservationFormProps {
 }
 
 export default function ReservationForm({ cabin, user }: ReservationFormProps) {
-  const { range } = useReservation();
-  // CHANGE
-  const { maxCapacity } = cabin;
+  const { range, resetRange } = useReservation();
+  const { maxCapacity, regularPrice, discount, id } = cabin;
+
+  const startDate = range?.from;
+  const endDate = range?.to;
+
+  const numNights =
+    startDate !== undefined && endDate !== undefined
+      ? differenceInDays(endDate, startDate)
+      : 0;
+
+  const cabinPrice = numNights * (Number(regularPrice) - Number(discount));
 
   if (maxCapacity === null)
     throw new Error("something went wrong with the cabin data");
+
+  const bookingData: BookingData = {
+    startDate,
+    endDate,
+    numNights,
+    cabinPrice,
+    cabinId: id,
+  };
 
   return (
     <div className="scale-[1.01]">
@@ -38,11 +66,17 @@ export default function ReservationForm({ cabin, user }: ReservationFormProps) {
         </div>
       </div>
 
-      <form className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col">
+      <form
+        action={async (formData) => {
+          await createReservation(formData, bookingData);
+          resetRange();
+        }}
+        className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col"
+      >
         <div className="space-y-2">
-          <p>
+          {/* <p>
             {String(range?.from)} to {String(range?.to)}
-          </p>
+          </p> */}
           <label htmlFor="numGuests">How many guests?</label>
           <select
             name="numGuests"
@@ -74,11 +108,13 @@ export default function ReservationForm({ cabin, user }: ReservationFormProps) {
         </div>
 
         <div className="flex justify-end items-center gap-6">
-          <p className="text-primary-300 text-base">Start by selecting dates</p>
-
-          <button className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
-            Reserve now
-          </button>
+          {!(startDate && endDate) ? (
+            <p className="text-primary-300 text-base py-4">
+              Start by selecting dates
+            </p>
+          ) : (
+            <SubmitButton pendingText="Reserving...">Reserve now</SubmitButton>
+          )}
         </div>
       </form>
     </div>
