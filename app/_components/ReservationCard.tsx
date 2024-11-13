@@ -30,20 +30,28 @@ export default function ReservationCard({ booking, onDelete }: BookingProps) {
   } = booking;
 
   // cause supabase types
-  if (guestId === null) return null;
-  if (startDate === null) return null;
-  if (endDate === null) return null;
-  if (numNights === null) return null;
-  if (totalPrice === null) return null;
-  if (numGuests === null) return null;
-  if (created_at === null) return null;
-  if (cabins === null) return null;
+  if (guestId === null)
+    throw new Error("Something went wrong with booking data");
+  if (startDate === null)
+    throw new Error("Something went wrong with booking data");
+  if (endDate === null)
+    throw new Error("Something went wrong with booking data");
+  if (numNights === null)
+    throw new Error("Something went wrong with booking data");
+  if (totalPrice === null)
+    throw new Error("Something went wrong with booking data");
+  if (numGuests === null)
+    throw new Error("Something went wrong with booking data");
+  if (created_at === null)
+    throw new Error("Something went wrong with booking data");
+  if (cabins === null)
+    throw new Error("Something went wrong with booking data");
 
   const { name, image } = cabins;
 
   // cause supabase types
-  if (name === null) return null;
-  if (image === null) return null;
+  if (name === null) throw new Error("Something went wrong with booking data");
+  if (image === null) throw new Error("Something went wrong with booking data");
 
   return (
     <div className="flex border border-primary-800">
