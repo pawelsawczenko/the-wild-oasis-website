@@ -11,8 +11,8 @@ export default function CabinDescription({ cabin }: CabinProps) {
   const { name, maxCapacity, image, description } = cabin;
 
   return (
-    <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
-      <div className="relative scale-[1.15] -translate-x-3">
+    <div className="grid grid-rows-2 gap-20 border border-primary-800 py-3 px-5 mb-24 md:py-3 md:px-10 md:mb-24 md:grid-cols-[3fr_4fr] md:grid-rows-none">
+      <div className="relative md:scale-[1.15] md:-translate-x-3">
         {image && (
           <Image
             src={image}
@@ -24,11 +24,11 @@ export default function CabinDescription({ cabin }: CabinProps) {
       </div>
 
       <div>
-        <h3 className="text-accent-100 font-black text-7xl mb-5 translate-x-[-254px] bg-primary-950 p-6 pb-1 w-[150%]">
+        <h3 className="text-accent-100 font-black text-5xl mb-5 bg-primary-950 md:p-6 md:pb-1 md:w-[150%] md:translate-x-[-254px] md:text-7xl">
           Cabin {name}
         </h3>
 
-        <p className="text-lg text-primary-300 mb-10">
+        <p className="text-base text-primary-300 mb-10 md:text-lg">
           {description && <TextExpander>{description}</TextExpander>}
         </p>
 

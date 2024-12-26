@@ -14,9 +14,9 @@ export default async function Page() {
   const numberOfCabins = cabins.length;
 
   return (
-    <div className="grid grid-cols-5 gap-x-24 gap-y-32 text-lg items-center">
+    <div className="grid grid-row-5 gap-x-24 gap-y-16 text-lg items-center md:grid-cols-5 md:gap-y-32">
       <div className="col-span-3">
-        <h1 className="text-4xl mb-10 text-accent-400 font-medium">
+        <h1 className="text-3xl mb-10 text-accent-400 font-medium md:text-4xl">
           Welcome to The Wild Oasis
         </h1>
 
@@ -64,7 +64,7 @@ export default async function Page() {
       </div>
 
       <div className="col-span-3">
-        <h1 className="text-4xl mb-10 text-accent-400 font-medium">
+        <h1 className="text-3xl mb-10 text-accent-400 font-medium md:text-4xl">
           Managed by our family since 1962
         </h1>
 
@@ -84,7 +84,7 @@ export default async function Page() {
             is like coming home.
           </p>
 
-          <div>
+          <div className="grid justify-items-center md:justify-items-start">
             <a
               href="/cabins"
               className="inline-block mt-4 bg-accent-500 px-8 py-5 text-primary-800 text-lg font-semibold hover:bg-accent-600 transition-all"

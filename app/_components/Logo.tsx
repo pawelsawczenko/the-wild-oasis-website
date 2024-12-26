@@ -4,8 +4,17 @@ import Link from "next/link";
 
 function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-4 z-10">
-      <Image src="/logo.png" height="60" width="60" alt="The Wild Oasis logo" />
+    <Link
+      href="/"
+      className="flex flex-col items-center gap-2 z-10 md:flex-row md:gap-4"
+    >
+      <Image
+        src="/logo.png"
+        height="60"
+        width="60"
+        alt="The Wild Oasis logo"
+        className="h-[40px] w-[40px] md:h-[60px] md:w-[60px]"
+      />
       {/* <Image
         src={logo}
         quality={50}
@@ -13,7 +22,7 @@ function Logo() {
         width="60"
         alt="The Wild Oasis logo"
       /> */}
-      <span className="text-xl font-semibold text-primary-100">
+      <span className="hidden text-base font-semibold text-primary-100 md:text-xl md:inline-block">
         The Wild Oasis
       </span>
     </Link>

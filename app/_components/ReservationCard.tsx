@@ -54,7 +54,7 @@ export default function ReservationCard({ booking, onDelete }: BookingProps) {
   if (image === null) throw new Error("Something went wrong with booking data");
 
   return (
-    <div className="flex border border-primary-800">
+    <div className="flex flex-col border border-primary-800 md:flex-row">
       <div className="relative h-32 aspect-square">
         <Image
           src={image}
@@ -100,12 +100,12 @@ export default function ReservationCard({ booking, onDelete }: BookingProps) {
         </div>
       </div>
 
-      <div className="flex flex-col border-l border-primary-800 w-[100px]">
+      <div className="flex flex-row w-[100%] border-t pt-2 pb-2 border-primary-800 md:border-l md:border-t-0 md:pt-0 md:pb-0 md:w-[100px] md:flex-col">
         {!isPast(startDate) ? (
           <>
             <Link
               href={`/account/reservations/edit/${id}`}
-              className="group flex items-center gap-2 uppercase text-xs font-bold text-primary-300 border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900"
+              className="group flex items-center gap-2 uppercase text-xs font-bold text-primary-300 border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900 md:border-b"
             >
               <PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors" />
               <span className="mt-1">Edit</span>
